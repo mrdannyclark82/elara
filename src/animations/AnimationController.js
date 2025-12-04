@@ -152,16 +152,42 @@ export class AnimationController {
 
     /**
      * Set property on target object
+     * Guards against prototype pollution
      */
     setProperty(target, property, value) {
         const parts = property.split('.');
+        
+        // Guard against prototype pollution
+        const dangerousKeys = new Set(['__proto__', 'constructor', 'prototype']);
+        for (const part of parts) {
+            if (dangerousKeys.has(part)) {
+                console.warn('Attempted to set dangerous property:', property);
+                return;
+            }
+        }
+        
         let obj = target;
         
         for (let i = 0; i < parts.length - 1; i++) {
-            obj = obj[parts[i]];
+            if (obj === null || obj === undefined) return;
+            const key = parts[i];
+            // Only traverse own properties
+            if (!Object.prototype.hasOwnProperty.call(obj, key)) return;
+            obj = obj[key];
         }
         
-        obj[parts[parts.length - 1]] = value;
+        if (obj !== null && obj !== undefined && typeof obj === 'object') {
+            const finalKey = parts[parts.length - 1];
+            // Only set if it's an own property or the object allows it
+            if (Object.prototype.hasOwnProperty.call(obj, finalKey) || Object.isExtensible(obj)) {
+                Object.defineProperty(obj, finalKey, {
+                    value: value,
+                    writable: true,
+                    enumerable: true,
+                    configurable: true
+                });
+            }
+        }
     }
 
     /**
