@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elara - AI Virtual Assistant</title>
+    <link rel="stylesheet" href="/src/styles/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- 3D Avatar Container -->
+        <div id="avatar-container">
+            <canvas id="avatar-canvas"></canvas>
+            <div id="avatar-status">
+                <span class="status-indicator"></span>
+                <span class="status-text">Elara is ready</span>
+            </div>
+        </div>
+
+        <!-- Main Interface -->
+        <div id="interface">
+            <!-- Chat Area -->
+            <div id="chat-container">
+                <div id="chat-messages"></div>
+                <div id="chat-input-container">
+                    <input type="text" id="chat-input" placeholder="Ask Elara anything..." />
+                    <button id="voice-btn" title="Voice Input">
+                        <svg viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="currentColor" d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                            <path fill="currentColor" d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                        </svg>
+                    </button>
+                    <button id="send-btn" title="Send Message">
+                        <svg viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="currentColor" d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div id="sidebar">
+                <!-- Quick Actions -->
+                <div class="sidebar-section">
+                    <h3>Quick Actions</h3>
+                    <div class="quick-actions">
+                        <button class="action-btn" data-action="calendar">
+                            <span class="icon">📅</span>
+                            <span>Calendar</span>
+                        </button>
+                        <button class="action-btn" data-action="code">
+                            <span class="icon">💻</span>
+                            <span>Code</span>
+                        </button>
+                        <button class="action-btn" data-action="youtube">
+                            <span class="icon">🎬</span>
+                            <span>YouTube</span>
+                        </button>
+                        <button class="action-btn" data-action="files">
+                            <span class="icon">📁</span>
+                            <span>Files</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Integrations Status -->
+                <div class="sidebar-section">
+                    <h3>Integrations</h3>
+                    <div class="integrations-list">
+                        <div class="integration-item" data-service="google">
+                            <span class="integration-icon">🔗</span>
+                            <span class="integration-name">Google</span>
+                            <span class="integration-status disconnected">Connect</span>
+                        </div>
+                        <div class="integration-item" data-service="grok">
+                            <span class="integration-icon">⚡</span>
+                            <span class="integration-name">Grok</span>
+                            <span class="integration-status disconnected">Connect</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Memory Stats -->
+                <div class="sidebar-section">
+                    <h3>Memory</h3>
+                    <div class="memory-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Conversations</span>
+                            <span class="stat-value" id="memory-conversations">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Preferences</span>
+                            <span class="stat-value" id="memory-preferences">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PiP YouTube Player -->
+        <div id="pip-player" class="hidden">
+            <div id="pip-header">
+                <span id="pip-title">YouTube Player</span>
+                <div id="pip-controls">
+                    <button id="pip-minimize" title="Minimize">−</button>
+                    <button id="pip-close" title="Close">×</button>
+                </div>
+            </div>
+            <div id="pip-video-container">
+                <div id="pip-placeholder">
+                    <span>Enter a YouTube URL or search</span>
+                </div>
+            </div>
+            <div id="pip-toolbar">
+                <input type="text" id="pip-url-input" placeholder="YouTube URL or search..." />
+                <button id="pip-play-btn">▶️</button>
+            </div>
+        </div>
+
+        <!-- Settings Modal -->
+        <div id="settings-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Settings</h2>
+                    <button class="modal-close">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="settings-section">
+                        <h3>Persona</h3>
+                        <select id="persona-select">
+                            <option value="professional">Professional</option>
+                            <option value="casual">Casual</option>
+                            <option value="empathetic">Empathetic</option>
+                            <option value="motivational">Motivational</option>
+                            <option value="humorous">Humorous</option>
+                        </select>
+                    </div>
+                    <div class="settings-section">
+                        <h3>Privacy</h3>
+                        <label class="toggle">
+                            <input type="checkbox" id="memory-enabled" checked>
+                            <span>Enable Memory</span>
+                        </label>
+                        <label class="toggle">
+                            <input type="checkbox" id="analytics-enabled">
+                            <span>Usage Analytics</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+</body>
+</html>
